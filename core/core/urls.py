@@ -20,6 +20,7 @@ from django.urls import path, include
 from .views import (
     RegisterView,
     LoginView,
+    LogoutView,
 )
 
 app_name = "core"
@@ -32,4 +33,5 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("api/", include("users.urls")),  # Include users app URLs
     path("api/", include("artists.urls")),  # Include artists app URLs
+    path("logout/",LogoutView.as_view(), name="logout"),  # Include albums app URLs
 ]

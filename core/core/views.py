@@ -2,6 +2,10 @@ from rest_framework import permissions, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.parsers import JSONParser  # type: ignore # Import JSONParser
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.authentication import SessionAuthentication
+from django.contrib.auth import logout
+
 
 from users.services import (
     get_raw_login_queries,
@@ -98,3 +102,22 @@ class RegisterView(APIView):
                 return Response(errors, status=status.HTTP_400_BAD_REQUEST)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+# logout functionality here
+class LogoutView(APIView):
+    """
+    Logout view to handle user logout.
+    """
+
+    permission_classes = [IsAuthenticated]
+    authentication_classes = [SessionAuthentication]
+
+    def post(self, request):
+        """
+        Logs out the current user.
+        """
+        logout(request)
+        return Response(
+            {"message": "Successfully logged out."}, status=status.HTTP_200_OK
+        )
